@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Audio Question Trainer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f7f7f7;
+    }
+
+    .box {
+      max-width: 550px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .correctButton {
+      background: #16a34a;
+    }
+
+    .correctButton:hover {
+      background: #15803d;
+    }
+
+    .incorrectButton {
+      background: #dc2626;
+    }
+
+    .incorrectButton:hover {
+      background: #b91c1c;
+    }
+
+    #answer {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #111827;
+      display: none;
+    }
+
+    #questionName {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .counters {
+      margin: 20px 0;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    #resultButtons {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>IAC National Practice</h1>
+    <h2>Good Luck Bella Sarfean! ❤️</h2>
+	<p>Built with love by Daddy.</p>
+    <p>Click the button to play a random question.</p>
+
+    <div class="counters">
+      <div>Total Questions Remaining: <strong id="remainingCount">0</strong></div>
+      <div>Correct: <strong id="correctCount">0</strong></div>
+      <div>Incorrect: <strong id="incorrectCount">0</strong></div>
+    </div>
+
+    <button onclick="playRandomQuestion()">Play Random Question</button>
+    <button onclick="showAnswer()">Show Answer</button>
+
+    <div id="questionName"></div>
+    <audio id="audioPlayer" controls></audio>
+    <div id="answer"></div>
+
+    <div id="resultButtons">
+      <button class="correctButton" onclick="markAnswer(true)">Correct</button>
+      <button class="incorrectButton" onclick="markAnswer(false)">Incorrect</button>
+    </div>
+  </div>
+
+  <script>
+    // Put this HTML file in the SAME folder as your audio files.
+    // Example files: Q001.mp3, Q002.mp3, Q003.mp3, Q021.m4a, etc.
+
+    const questions = [
+{ audio: "audio/Q010.m4a", answer: " Lakes " },
+{ audio: "audio/Q011.m4a", answer: " ATP (or Adenosine Triphosphate)" },
+{ audio: "audio/Q012.m4a", answer: "Loops" },
+{ audio: "audio/Q013.m4a", answer: "Petri dishes" },
+{ audio: "audio/Q014.m4a", answer: "Tundra " },
+{ audio: "audio/Q015.m4a", answer: "Chromosomes" },
+{ audio: "audio/Q016.m4a", answer: "Breaking the Sound Barrier" },
+{ audio: "audio/Q017.m4a", answer: "Ribs" },
+{ audio: "audio/Q018.m4a", answer: "Amino Acids" },
+{ audio: "audio/Q019.m4a", answer: "Energy " },
+{ audio: "audio/Q020.m4a", answer: "Jellyfish " },
+{ audio: "audio/Q021.m4a", answer: "Ions" },
+{ audio: "audio/Q022.m4a", answer: "Gamma Rays" },
+{ audio: "audio/Q023.m4a", answer: "Endoplasmic Reticulum" },
+{ audio: "audio/Q024.m4a", answer: "Glucose" },
+{ audio: "audio/Q025.m4a", answer: "Capacitors" },
+{ audio: "audio/Q026.m4a", answer: "Volcano " },
+{ audio: "audio/Q027.m4a", answer: "Appendix" },
+{ audio: "audio/Q028.m4a", answer: "Coral " },
+{ audio: "audio/Q029.m4a", answer: " Neutron Stars " },
+{ audio: "audio/Q030.m4a", answer: "Ceres" },
+{ audio: "audio/Q031.m4a", answer: "Pi (accept 3.14)" },
+{ audio: "audio/Q032.m4a", answer: " Orbitals " },
+{ audio: "audio/Q033.m4a", answer: "Quadrilaterals" },
+{ audio: "audio/Q034.m4a", answer: "Humidity" },
+{ audio: "audio/Q035.m4a", answer: "Greece" },
+{ audio: "audio/Q036.m4a", answer: "Meteorites" },
+{ audio: "audio/Q037.m4a", answer: "Alpha Centauri " },
+{ audio: "audio/Q038.m4a", answer: "Zinc " },
+{ audio: "audio/Q039.m4a", answer: "Oxygen " },
+{ audio: "audio/Q040.m4a", answer: "Sun" },
+{ audio: "audio/Q041.m4a", answer: "Reptiles " },
+{ audio: "audio/Q042.m4a", answer: "Earth " },
+{ audio: "audio/Q043.m4a", answer: "Flowers" },
+{ audio: "audio/Q044.m4a", answer: "Orion" },
+{ audio: "audio/Q045.m4a", answer: "DNA " },
+{ audio: "audio/Q046.m4a", answer: "Gulf Stream" },
+{ audio: "audio/Q047.m4a", answer: "Electrons" },
+{ audio: "audio/Q048.m4a", answer: "Volume" },
+{ audio: "audio/Q049.m4a", answer: " Insulin" },
+{ audio: "audio/Q050.m4a", answer: "Fire Fighting " },
+{ audio: "audio/Q051.m4a", answer: "Telescopes" },
+{ audio: "audio/Q052.m4a", answer: "Arteries " },
+{ audio: "audio/Q053.m4a", answer: "Acids " },
+{ audio: "audio/Q054.m4a", answer: "Iron (or Fe)" },
+{ audio: "audio/Q055.m4a", answer: "Artificial Intelligence (or A.I.) " },
+{ audio: "audio/Q056.m4a", answer: "Coal" },
+{ audio: "audio/Q057.m4a", answer: "PTSD " },
+{ audio: "audio/Q058.m4a", answer: " Alcohols" },
+{ audio: "audio/Q059.m4a", answer: "Neurons" }
+    ];
+
+    let remainingQuestions = [...questions];
+    let currentQuestion = null;
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let alreadyMarked = false;
+
+    updateCounters();
+
+    function playRandomQuestion() {
+      if (remainingQuestions.length === 0) {
+        document.getElementById("questionName").textContent = "All questions are finished!";
+        document.getElementById("answer").style.display = "none";
+        document.getElementById("resultButtons").style.display = "none";
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+      currentQuestion = remainingQuestions[randomIndex];
+      alreadyMarked = false;
+
+      const audioPlayer = document.getElementById("audioPlayer");
+      const answerDiv = document.getElementById("answer");
+      const questionName = document.getElementById("questionName");
+      const resultButtons = document.getElementById("resultButtons");
+
+      audioPlayer.src = currentQuestion.audio;
+      audioPlayer.play();
+
+      answerDiv.style.display = "none";
+      answerDiv.textContent = "";
+      resultButtons.style.display = "none";
+      questionName.textContent = "Now playing: " + currentQuestion.audio;
+    }
+
+    function showAnswer() {
+      const answerDiv = document.getElementById("answer");
+      const resultButtons = document.getElementById("resultButtons");
+
+      if (!currentQuestion) {
+        answerDiv.textContent = "Please play a question first.";
+        resultButtons.style.display = "none";
+      } else {
+        answerDiv.textContent = "Answer: " + currentQuestion.answer;
+        resultButtons.style.display = "block";
+      }
+
+      answerDiv.style.display = "block";
+    }
+
+    function markAnswer(isCorrect) {
+      if (!currentQuestion || alreadyMarked) {
+        return;
+      }
+
+      if (isCorrect) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+      }
+
+      remainingQuestions = remainingQuestions.filter(q => q.audio !== currentQuestion.audio);
+      alreadyMarked = true;
+      currentQuestion = null;
+
+      document.getElementById("resultButtons").style.display = "none";
+      document.getElementById("questionName").textContent = "Click Play Random Question for the next question.";
+
+      updateCounters();
+    }
+
+    function updateCounters() {
+      document.getElementById("remainingCount").textContent = remainingQuestions.length;
+      document.getElementById("correctCount").textContent = correctCount;
+      document.getElementById("incorrectCount").textContent = incorrectCount;
+    }
+  </script>
+</body>
+</html>
