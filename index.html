@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Audio Question Trainer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      background: #f7f7f7;
+    }
+
+    .box {
+      max-width: 550px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    .correctButton {
+      background: #16a34a;
+    }
+
+    .correctButton:hover {
+      background: #15803d;
+    }
+
+    .incorrectButton {
+      background: #dc2626;
+    }
+
+    .incorrectButton:hover {
+      background: #b91c1c;
+    }
+
+    #answer {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #111827;
+      display: none;
+    }
+
+    #questionName {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .counters {
+      margin: 20px 0;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    #resultButtons {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Audio Question Practice</h1>
+    <p>Click the button to play a random question.</p>
+
+    <div class="counters">
+      <div>Total Questions Remaining: <strong id="remainingCount">0</strong></div>
+      <div>Correct: <strong id="correctCount">0</strong></div>
+      <div>Incorrect: <strong id="incorrectCount">0</strong></div>
+    </div>
+
+    <button onclick="playRandomQuestion()">Play Random Question</button>
+    <button onclick="showAnswer()">Show Answer</button>
+
+    <div id="questionName"></div>
+    <audio id="audioPlayer" controls></audio>
+    <div id="answer"></div>
+
+    <div id="resultButtons">
+      <button class="correctButton" onclick="markAnswer(true)">Correct</button>
+      <button class="incorrectButton" onclick="markAnswer(false)">Incorrect</button>
+    </div>
+  </div>
+
+  <script>
+    // Put this HTML file in the SAME folder as your audio files.
+    // Example files: Q001.mp3, Q002.mp3, Q003.mp3, Q021.wav, etc.
+
+    const questions = [
+{ audio: "Q010.wav", answer: " Lakes " },
+{ audio: "Q011.wav", answer: " ATP (or Adenosine Triphosphate)" },
+{ audio: "Q012.wav", answer: "Loops" },
+{ audio: "Q013.wav", answer: "Petri dishes" },
+{ audio: "Q014.wav", answer: "Tundra " },
+{ audio: "Q015.wav", answer: "Chromosomes" },
+{ audio: "Q016.wav", answer: "Breaking the Sound Barrier" },
+{ audio: "Q017.wav", answer: "Ribs" },
+{ audio: "Q018.wav", answer: "Amino Acids" },
+{ audio: "Q019.wav", answer: "Energy " },
+{ audio: "Q020.wav", answer: "Jellyfish " },
+{ audio: "Q021.wav", answer: "Ions" },
+{ audio: "Q022.wav", answer: "Gamma Rays" },
+{ audio: "Q023.wav", answer: "Endoplasmic Reticulum" },
+{ audio: "Q024.wav", answer: "Glucose" },
+{ audio: "Q025.wav", answer: "Capacitors" },
+{ audio: "Q026.wav", answer: "Volcano " },
+{ audio: "Q027.wav", answer: "Appendix" },
+{ audio: "Q028.wav", answer: "Coral " },
+{ audio: "Q029.wav", answer: " Neutron Stars " },
+{ audio: "Q030.wav", answer: "Ceres" },
+{ audio: "Q031.wav", answer: "Pi (accept 3.14)" },
+{ audio: "Q032.wav", answer: " Orbitals " },
+{ audio: "Q033.wav", answer: "Quadrilaterals" },
+{ audio: "Q034.wav", answer: "Humidity" },
+{ audio: "Q035.wav", answer: "Greece" },
+{ audio: "Q036.wav", answer: "Meteorites" },
+{ audio: "Q037.wav", answer: "Alpha Centauri " },
+{ audio: "Q038.wav", answer: "Zinc " },
+{ audio: "Q039.wav", answer: "Oxygen " },
+{ audio: "Q040.wav", answer: "Sun" },
+{ audio: "Q041.wav", answer: "Reptiles " },
+{ audio: "Q042.wav", answer: "Earth " },
+{ audio: "Q043.wav", answer: "Flowers" },
+{ audio: "Q044.wav", answer: "Orion" },
+{ audio: "Q045.wav", answer: "DNA " },
+{ audio: "Q046.wav", answer: "Gulf Stream" },
+{ audio: "Q047.wav", answer: "Electrons" },
+{ audio: "Q048.wav", answer: "Volume" },
+{ audio: "Q049.wav", answer: " Insulin" },
+{ audio: "Q050.wav", answer: "Fire Fighting " },
+{ audio: "Q051.wav", answer: "Telescopes" },
+{ audio: "Q052.wav", answer: "Arteries " },
+{ audio: "Q053.wav", answer: "Acids " },
+{ audio: "Q054.wav", answer: "Iron (or Fe)" },
+{ audio: "Q055.wav", answer: "Artificial Intelligence (or A.I.) " },
+{ audio: "Q056.wav", answer: "Coal" },
+{ audio: "Q057.wav", answer: "PTSD " },
+{ audio: "Q058.wav", answer: " Alcohols" },
+{ audio: "Q059.wav", answer: "Neurons" },
+{ audio: "Q060.wav", answer: "Supernova" },
+{ audio: "Q061.wav", answer: " Crust" },
+{ audio: "Q062.wav", answer: "Einstein" },
+{ audio: "Q063.wav", answer: "Multiplication" },
+{ audio: "Q064.wav", answer: "Skin " },
+{ audio: "Q065.wav", answer: " Tanks " },
+{ audio: "Q066.wav", answer: " Carbon (or C)" },
+{ audio: "Q067.wav", answer: " Fossils (accept Dinosaur Bones)" },
+{ audio: "Q068.wav", answer: " Neptune" },
+{ audio: "Q069.wav", answer: " Avogadro's" },
+{ audio: "Q070.wav", answer: "Viscosity" },
+{ audio: "Q071.wav", answer: "Photosynthesis" },
+{ audio: "Q072.wav", answer: "Black Holes " },
+{ audio: "Q073.wav", answer: "Nobel" },
+{ audio: "Q074.wav", answer: "Catalysts" },
+{ audio: "Q075.wav", answer: "Helium" },
+{ audio: "Q076.wav", answer: "Kangaroo" },
+{ audio: "Q077.wav", answer: "Venus" },
+{ audio: "Q078.wav", answer: "Malaria" },
+{ audio: "Q079.wav", answer: "Emojis" },
+{ audio: "Q080.wav", answer: "Skyscrapers" },
+{ audio: "Q081.wav", answer: "Triangle" },
+{ audio: "Q082.wav", answer: "Tornado" },
+{ audio: "Q083.wav", answer: " Soil" },
+{ audio: "Q084.wav", answer: "Green" },
+{ audio: "Q085.wav", answer: "Surgery" },
+{ audio: "Q086.wav", answer: "Honey" },
+{ audio: "Q087.wav", answer: "Mountains" },
+{ audio: "Q088.wav", answer: "Armadillos" },
+{ audio: "Q089.wav", answer: "Moon" },
+{ audio: "Q090.wav", answer: "Caffeine" },
+{ audio: "Q091.wav", answer: "Nuclear " },
+{ audio: "Q092.wav", answer: "Sphere" },
+{ audio: "Q093.wav", answer: "Memory" },
+{ audio: "Q094.wav", answer: "Algae" },
+{ audio: "Q095.wav", answer: "Smallpox " },
+{ audio: "Q096.wav", answer: "Normal Force" },
+{ audio: "Q097.wav", answer: "Dating OR Radiocarbon Dating OR Carbon Dating" },
+{ audio: "Q098.wav", answer: "Mars" }, 
+{ audio: "Q099.wav", answer: "Seizures " }, 
+{ audio: "Q100.wav", answer: " Birds" }, 
+{ audio: "Q101.wav", answer: "Mercury " }, 
+{ audio: "Q102.wav", answer: "Amelia Mary Earhart" }, 
+{ audio: "Q103.wav", answer: "Pump " }, 
+{ audio: "Q104.wav", answer: "Galaxy " }, 
+{ audio: "Q105.wav", answer: "Galileo Galilei " }, 
+{ audio: "Q106.wav", answer: "28" }, 
+{ audio: "Q107.wav", answer: "Blood " }, 
+{ audio: "Q108.wav", answer: "Dreams " }, 
+{ audio: "Q109.wav", answer: " Saturn" }, 
+{ audio: "Q110.wav", answer: "Nucleus " }, 
+{ audio: "Q111.wav", answer: "Video Games " }, 
+{ audio: "Q112.wav", answer: "Gravity " }, 
+{ audio: "Q113.wav", answer: "Avalanches" }, 
+{ audio: "Q114.wav", answer: "Esophagus" }, 
+{ audio: "Q115.wav", answer: "Earth's Core" }, 
+{ audio: "Q116.wav", answer: " Dogs" }, 
+{ audio: "Q117.wav", answer: "Dopamine" }, 
+{ audio: "Q118.wav", answer: "Bridges" }, 
+{ audio: "Q119.wav", answer: "Jupiter" }, 
+{ audio: "Q120.wav", answer: "Glaciers" }, 
+{ audio: "Q121.wav", answer: "Greenhouse Effect" }, 
+{ audio: "Q122.wav", answer: "Babies " }, 
+{ audio: "Q123.wav", answer: "Force Or Gravity" }, 
+{ audio: "Q124.wav", answer: "Kepler" },
+{ audio: "Q125.wav", answer: "Cells" },
+{ audio: "Q126.wav", answer: "Liquid" },
+{ audio: "Q127.wav", answer: "Electrons" },
+{ audio: "Q128.wav", answer: "Water (H₂O)" },
+{ audio: "Q129.wav", answer: "Sun" },
+{ audio: "Q130.wav", answer: "Speed of light" },
+{ audio: "Q131.wav", answer: "Red" },
+{ audio: "Q132.wav", answer: "René Descartes" },
+{ audio: "Q133.wav", answer: "Matrix" },
+{ audio: "Q134.wav", answer: "Mitochondria" },
+{ audio: "Q135.wav", answer: "Magnetism" },
+{ audio: "Q136.wav", answer: "Jupiter" },
+{ audio: "Q137.wav", answer: "Curie" },
+{ audio: "Q138.wav", answer: "Noble gases" },
+{ audio: "Q139.wav", answer: "Chromosomes" },
+{ audio: "Q140.wav", answer: "Crust" },
+{ audio: "Q141.wav", answer: "Pregnancy tests" },
+{ audio: "Q142.wav", answer: "Chlorine" },
+{ audio: "Q143.wav", answer: "Search engines" },
+{ audio: "Q144.wav", answer: "Circle" },
+{ audio: "Q145.wav", answer: "Protons" },
+{ audio: "Q146.wav", answer: "HIV" },
+{ audio: "Q147.wav", answer: "Eclipses" },
+{ audio: "Q148.wav", answer: "Gold" },
+{ audio: "Q149.wav", answer: "Evolution" },
+{ audio: "Q150.wav", answer: "Skin" },
+{ audio: "Q151.wav", answer: "Clouds" },
+{ audio: "Q152.wav", answer: "RNA" },
+{ audio: "Q153.wav", answer: "Lava" },
+{ audio: "Q154.wav", answer: "Mass" },
+{ audio: "Q155.wav", answer: "Concrete" },
+{ audio: "Q156.wav", answer: "Horse" },
+{ audio: "Q157.wav", answer: "Colloids" },
+{ audio: "Q158.wav", answer: "Basalt" },
+{ audio: "Q159.wav", answer: "Algorithms" },
+{ audio: "Q160.wav", answer: "PBS" },
+{ audio: "Q161.wav", answer: "Chloroplasts" },
+{ audio: "Q162.wav", answer: "Diffusion" },
+{ audio: "Q163.wav", answer: "Asteroids" },
+{ audio: "Q164.wav", answer: "Lasers" },
+{ audio: "Q165.wav", answer: "Paper" },
+{ audio: "Q166.wav", answer: "Standard deviation" },
+{ audio: "Q167.wav", answer: "Cell nucleus" },
+{ audio: "Q168.wav", answer: "Copper" },
+{ audio: "Q169.wav", answer: "Mantle" },
+{ audio: "Q170.wav", answer: "Levers" },
+{ audio: "Q171.wav", answer: "Polynomials" },
+{ audio: "Q172.wav", answer: "Mitosis" },
+{ audio: "Q173.wav", answer: "Ozone" },
+{ audio: "Q174.wav", answer: "Soil" },
+{ audio: "Q175.wav", answer: "Black holes" },
+{ audio: "Q176.wav", answer: "Fire" },
+{ audio: "Q177.wav", answer: "Blood pressure" },
+{ audio: "Q178.wav", answer: "Calcium" },
+{ audio: "Q179.wav", answer: "Gravity" },
+{ audio: "Q180.wav", answer: "Video calling" },
+{ audio: "Q181.wav", answer: "Roots" },
+{ audio: "Q182.wav", answer: "Deserts" },
+{ audio: "Q183.wav", answer: "Freezing point" },
+{ audio: "Q184.wav", answer: "Primates" },
+{ audio: "Q185.wav", answer: "Saturn" },
+{ audio: "Q186.wav", answer: "Lakes" },
+{ audio: "Q187.wav", answer: "Fungi" },
+{ audio: "Q188.wav", answer: "Electronegativity" },
+{ audio: "Q189.wav", answer: "Jet stream" },
+{ audio: "Q190.wav", answer: "Stephen Hawking" },
+{ audio: "Q191.wav", answer: "Neutrinos" },
+{ audio: "Q192.wav", answer: "Irrational numbers" },
+{ audio: "Q193.wav", answer: "Mimicry" },
+{ audio: "Q194.wav", answer: "Lithium" },
+{ audio: "Q195.wav", answer: "Nebulae" },
+{ audio: "Q196.wav", answer: "Atomic nucleus" },
+{ audio: "Q197.wav", answer: "China" },
+{ audio: "Q198.wav", answer: "Dimensions" },
+{ audio: "Q199.wav", answer: "Ribosomes" },
+{ audio: "Q200.wav", answer: "Carbon dioxide" },
+{ audio: "Q201.wav", answer: "Voltage" },
+{ audio: "Q202.wav", answer: "Galileo Galilei" },
+{ audio: "Q203.wav", answer: "Madagascar" },
+{ audio: "Q204.wav", answer: "pH scale" },
+{ audio: "Q205.wav", answer: "Limestone" },
+{ audio: "Q206.wav", answer: "Artificial sweeteners" },
+{ audio: "Q207.wav", answer: "Sulfur" },
+{ audio: "Q208.wav", answer: "Burrowing" },
+{ audio: "Q209.wav", answer: "Heat" },
+{ audio: "Q210.wav", answer: "Thomas Edison" },
+{ audio: "Q211.wav", answer: "Liver" },
+{ audio: "Q212.wav", answer: "Spiral galaxies" },
+{ audio: "Q213.wav", answer: "Crude oil" },
+{ audio: "Q214.wav", answer: "Amazon" },
+{ audio: "Q215.wav", answer: "Impact craters" },
+{ audio: "Q216.wav", answer: "Diamond" },
+{ audio: "Q217.wav", answer: "Ears" }
+    ];
+
+    let remainingQuestions = [...questions];
+    let currentQuestion = null;
+    let correctCount = 0;
+    let incorrectCount = 0;
+    let alreadyMarked = false;
+
+    updateCounters();
+
+    function playRandomQuestion() {
+      if (remainingQuestions.length === 0) {
+        document.getElementById("questionName").textContent = "All questions are finished!";
+        document.getElementById("answer").style.display = "none";
+        document.getElementById("resultButtons").style.display = "none";
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+      currentQuestion = remainingQuestions[randomIndex];
+      alreadyMarked = false;
+
+      const audioPlayer = document.getElementById("audioPlayer");
+      const answerDiv = document.getElementById("answer");
+      const questionName = document.getElementById("questionName");
+      const resultButtons = document.getElementById("resultButtons");
+
+      audioPlayer.src = currentQuestion.audio;
+      audioPlayer.play();
+
+      answerDiv.style.display = "none";
+      answerDiv.textContent = "";
+      resultButtons.style.display = "none";
+      questionName.textContent = "Now playing: " + currentQuestion.audio;
+    }
+
+    function showAnswer() {
+      const answerDiv = document.getElementById("answer");
+      const resultButtons = document.getElementById("resultButtons");
+
+      if (!currentQuestion) {
+        answerDiv.textContent = "Please play a question first.";
+        resultButtons.style.display = "none";
+      } else {
+        answerDiv.textContent = "Answer: " + currentQuestion.answer;
+        resultButtons.style.display = "block";
+      }
+
+      answerDiv.style.display = "block";
+    }
+
+    function markAnswer(isCorrect) {
+      if (!currentQuestion || alreadyMarked) {
+        return;
+      }
+
+      if (isCorrect) {
+        correctCount++;
+      } else {
+        incorrectCount++;
+      }
+
+      remainingQuestions = remainingQuestions.filter(q => q.audio !== currentQuestion.audio);
+      alreadyMarked = true;
+      currentQuestion = null;
+
+      document.getElementById("resultButtons").style.display = "none";
+      document.getElementById("questionName").textContent = "Click Play Random Question for the next question.";
+
+      updateCounters();
+    }
+
+    function updateCounters() {
+      document.getElementById("remainingCount").textContent = remainingQuestions.length;
+      document.getElementById("correctCount").textContent = correctCount;
+      document.getElementById("incorrectCount").textContent = incorrectCount;
+    }
+  </script>
+</body>
+</html>
