@@ -145,6 +145,23 @@
       display: none;
       margin-top: 15px;
     }
+    .pdf-button {
+  display: inline-block;
+  margin: 12px 10px;
+  padding: 14px 22px;
+  background: #7c3aed;
+  color: white;
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: bold;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(124,58,237,0.25);
+}
+
+.pdf-button:hover {
+  background: #6d28d9;
+  transform: scale(1.04);
+}
   </style>
 </head>
 
@@ -160,6 +177,7 @@
     <h2>Good Luck Bella Sarfean! ❤️</h2>
     <p>Built with love by Daddy.</p>
     <p>Click the button to play a random question.</p>
+    <a href="PDFs/Set%2001.pdf" target="_blank" class="pdf-button">📘 View Set 01 PDF</a>
 
     <div class="counters">
       <div class="counter-card">Remaining: <strong id="remainingCount">0</strong></div>
@@ -183,37 +201,6 @@
 
   <script>
     const questions = [
-{ audio: "audio/Q010.m4a", answer: " Lakes " },
-{ audio: "audio/Q011.m4a", answer: " ATP (or Adenosine Triphosphate)" },
-{ audio: "audio/Q012.m4a", answer: "Loops" },
-{ audio: "audio/Q013.m4a", answer: "Petri dishes" },
-{ audio: "audio/Q014.m4a", answer: "Tundra " },
-{ audio: "audio/Q015.m4a", answer: "Chromosomes" },
-{ audio: "audio/Q016.m4a", answer: "Breaking the Sound Barrier" },
-{ audio: "audio/Q017.m4a", answer: "Ribs" },
-{ audio: "audio/Q018.m4a", answer: "Amino Acids" },
-{ audio: "audio/Q019.m4a", answer: "Energy " },
-{ audio: "audio/Q020.m4a", answer: "Jellyfish " },
-{ audio: "audio/Q021.m4a", answer: "Ions" },
-{ audio: "audio/Q022.m4a", answer: "Gamma Rays" },
-{ audio: "audio/Q023.m4a", answer: "Endoplasmic Reticulum" },
-{ audio: "audio/Q024.m4a", answer: "Glucose" },
-{ audio: "audio/Q025.m4a", answer: "Capacitors" },
-{ audio: "audio/Q026.m4a", answer: "Volcano " },
-{ audio: "audio/Q027.m4a", answer: "Appendix" },
-{ audio: "audio/Q028.m4a", answer: "Coral " },
-{ audio: "audio/Q029.m4a", answer: " Neutron Stars " },
-{ audio: "audio/Q030.m4a", answer: "Ceres" },
-{ audio: "audio/Q031.m4a", answer: "Pi (accept 3.14)" },
-{ audio: "audio/Q032.m4a", answer: " Orbitals " },
-{ audio: "audio/Q033.m4a", answer: "Quadrilaterals" },
-{ audio: "audio/Q034.m4a", answer: "Humidity" },
-{ audio: "audio/Q035.m4a", answer: "Greece" },
-{ audio: "audio/Q036.m4a", answer: "Meteorites" },
-{ audio: "audio/Q037.m4a", answer: "Alpha Centauri " },
-{ audio: "audio/Q038.m4a", answer: "Zinc " },
-{ audio: "audio/Q039.m4a", answer: "Oxygen " },
-{ audio: "audio/Q040.m4a", answer: "Sun" },
 { audio: "audio/Q041.m4a", answer: "Reptiles " },
 { audio: "audio/Q042.m4a", answer: "Earth " },
 { audio: "audio/Q043.m4a", answer: "Flowers" },
@@ -232,7 +219,18 @@
 { audio: "audio/Q056.m4a", answer: "Coal" },
 { audio: "audio/Q057.m4a", answer: "PTSD " },
 { audio: "audio/Q058.m4a", answer: " Alcohols" },
-{ audio: "audio/Q059.m4a", answer: "Neurons" }
+{ audio: "audio/Q059.m4a", answer: "Neurons" },
+{ audio: "audio/Q060.m4a", answer: "Supernova" },
+{ audio: "audio/Q061.m4a", answer: " Crust" },
+{ audio: "audio/Q062.m4a", answer: "Einstein" },
+{ audio: "audio/Q063.m4a", answer: "Multiplication" },
+{ audio: "audio/Q064.m4a", answer: "Skin " },
+{ audio: "audio/Q065.m4a", answer: " Tanks " },
+{ audio: "audio/Q066.m4a", answer: " Carbon (or C)" },
+{ audio: "audio/Q067.m4a", answer: " Fossils (accept Dinosaur Bones)" },
+{ audio: "audio/Q068.m4a", answer: " Neptune" },
+{ audio: "audio/Q069.m4a", answer: " Avogadro's" },
+{ audio: "audio/Q070.m4a", answer: "Viscosity" }
     ];
 
     let remainingQuestions = [...questions];

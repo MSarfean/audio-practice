@@ -145,6 +145,23 @@
       display: none;
       margin-top: 15px;
     }
+    .pdf-button {
+  display: inline-block;
+  margin: 12px 10px;
+  padding: 14px 22px;
+  background: #7c3aed;
+  color: white;
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: bold;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(124,58,237,0.25);
+}
+
+.pdf-button:hover {
+  background: #6d28d9;
+  transform: scale(1.04);
+}
   </style>
 </head>
 
@@ -160,6 +177,7 @@
     <h2>Good Luck Bella Sarfean! ❤️</h2>
     <p>Built with love by Daddy.</p>
     <p>Click the button to play a random question.</p>
+    <a href="PDFs/Set%2003.pdf" target="_blank" class="pdf-button">📘 View Set 03 PDF</a>
 
     <div class="counters">
       <div class="counter-card">Remaining: <strong id="remainingCount">0</strong></div>
@@ -183,44 +201,6 @@
 
   <script>
     const questions = [
-{ audio: "audio/Q060.m4a", answer: "Supernova" },
-{ audio: "audio/Q061.m4a", answer: " Crust" },
-{ audio: "audio/Q062.m4a", answer: "Einstein" },
-{ audio: "audio/Q063.m4a", answer: "Multiplication" },
-{ audio: "audio/Q064.m4a", answer: "Skin " },
-{ audio: "audio/Q065.m4a", answer: " Tanks " },
-{ audio: "audio/Q066.m4a", answer: " Carbon (or C)" },
-{ audio: "audio/Q067.m4a", answer: " Fossils (accept Dinosaur Bones)" },
-{ audio: "audio/Q068.m4a", answer: " Neptune" },
-{ audio: "audio/Q069.m4a", answer: " Avogadro's" },
-{ audio: "audio/Q070.m4a", answer: "Viscosity" },
-{ audio: "audio/Q071.m4a", answer: "Photosynthesis" },
-{ audio: "audio/Q072.m4a", answer: "Black Holes " },
-{ audio: "audio/Q073.m4a", answer: "Nobel" },
-{ audio: "audio/Q074.m4a", answer: "Catalysts" },
-{ audio: "audio/Q075.m4a", answer: "Helium" },
-{ audio: "audio/Q076.m4a", answer: "Kangaroo" },
-{ audio: "audio/Q077.m4a", answer: "Venus" },
-{ audio: "audio/Q078.m4a", answer: "Malaria" },
-{ audio: "audio/Q079.m4a", answer: "Emojis" },
-{ audio: "audio/Q080.m4a", answer: "Skyscrapers" },
-{ audio: "audio/Q081.m4a", answer: "Triangle" },
-{ audio: "audio/Q082.m4a", answer: "Tornado" },
-{ audio: "audio/Q083.m4a", answer: " Soil" },
-{ audio: "audio/Q084.m4a", answer: "Green" },
-{ audio: "audio/Q085.m4a", answer: "Surgery" },
-{ audio: "audio/Q086.m4a", answer: "Honey" },
-{ audio: "audio/Q087.m4a", answer: "Mountains" },
-{ audio: "audio/Q088.m4a", answer: "Armadillos" },
-{ audio: "audio/Q089.m4a", answer: "Moon" },
-{ audio: "audio/Q090.m4a", answer: "Caffeine" },
-{ audio: "audio/Q091.m4a", answer: "Nuclear " },
-{ audio: "audio/Q092.m4a", answer: "Sphere" },
-{ audio: "audio/Q093.m4a", answer: "Memory" },
-{ audio: "audio/Q094.m4a", answer: "Algae" },
-{ audio: "audio/Q095.m4a", answer: "Smallpox " },
-{ audio: "audio/Q096.m4a", answer: "Normal Force" },
-{ audio: "audio/Q097.m4a", answer: "Dating OR Radiocarbon Dating OR Carbon Dating" },
 { audio: "audio/Q098.m4a", answer: "Mars" }, 
 { audio: "audio/Q099.m4a", answer: "Seizures " }, 
 { audio: "audio/Q100.m4a", answer: " Birds" }, 
@@ -232,7 +212,22 @@
 { audio: "audio/Q106.m4a", answer: "28" }, 
 { audio: "audio/Q107.m4a", answer: "Blood " }, 
 { audio: "audio/Q108.m4a", answer: "Dreams " }, 
-{ audio: "audio/Q109.m4a", answer: " Saturn" }
+{ audio: "audio/Q109.m4a", answer: " Saturn" }, 
+{ audio: "audio/Q110.m4a", answer: "Nucleus " }, 
+{ audio: "audio/Q111.m4a", answer: "Video Games " }, 
+{ audio: "audio/Q112.m4a", answer: "Gravity " }, 
+{ audio: "audio/Q113.m4a", answer: "Avalanches" }, 
+{ audio: "audio/Q114.m4a", answer: "Esophagus" }, 
+{ audio: "audio/Q115.m4a", answer: "Earth's Core" }, 
+{ audio: "audio/Q116.m4a", answer: " Dogs" }, 
+{ audio: "audio/Q117.m4a", answer: "Dopamine" }, 
+{ audio: "audio/Q118.m4a", answer: "Bridges" }, 
+{ audio: "audio/Q119.m4a", answer: "Jupiter" }, 
+{ audio: "audio/Q120.m4a", answer: "Glaciers" }, 
+{ audio: "audio/Q121.m4a", answer: "Greenhouse Effect" }, 
+{ audio: "audio/Q122.m4a", answer: "Babies " }, 
+{ audio: "audio/Q123.m4a", answer: "Force Or Gravity" }, 
+{ audio: "audio/Q124.m4a", answer: "Kepler" },
     ];
 
     let remainingQuestions = [...questions];
